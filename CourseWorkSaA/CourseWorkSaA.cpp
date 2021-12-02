@@ -11,6 +11,7 @@ struct SetNode { //Узел множества
 	SetNode* next;
 };
 
+
 void GetStartedSet(bool& isStarted) {
 	if (isStarted) {
 		system("cls");
@@ -38,7 +39,7 @@ void isAllocated(SetNode* node) {
 	}
 }
 
-SetNode* InitializeElement() {
+SetNode* InitializeSetElement() {
 	SetNode* newNode = (SetNode*)malloc(sizeof(SetNode));
 	isAllocated(newNode);
 
@@ -55,7 +56,7 @@ void AddtoSet(SetNode*& head) {
 		t = t->next;
 	}
 
-	t = InitializeElement();
+	t = InitializeSetElement();
 }
 
 void GetCommandofSet(SetNode*& head, bool& isStarted) {
@@ -73,7 +74,7 @@ void GetCommandofSet(SetNode*& head, bool& isStarted) {
 		FinishWorkSet(isStarted);
 		break;
 	case 7:
-
+		AddtoSet(head);
 		break;
 	default:
 		break;
@@ -81,8 +82,8 @@ void GetCommandofSet(SetNode*& head, bool& isStarted) {
 }
 
 void PrintSetMenu() {
-	printf("[1] - Начать работу со множеством\n");
-	printf("[2] - Закончить работу со множеством\n");
+	printf("[1] - Начать работу с множеством\n");
+	printf("[2] - Закончить работу с множеством\n");
 	printf("[3] - Сделать пустой\n");
 	printf("[4] - Структура пустая?\n");
 	printf("[5] - Удалить элемент из множества\n");
