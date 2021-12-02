@@ -15,18 +15,18 @@ struct SetNode { //Узел множества
 void GetStartedSet(bool& isStarted) {
 	if (isStarted) {
 		system("cls");
-		printf("Вы уже работаете со множеством!\nЧтобы начать работу с новым множеством, закончите с текущим [2]!\n");
+		printf("Вы уже работаете с множеством!\nЧтобы начать работу с новым множеством, закончите с текущим [2]!\n");
 		system("pause");
 	}
 	else
 		isStarted = true;
 }
 
-void FinishWorkSet(bool& isStarted) {
+void FinishWorkSet(SetNode*& head, bool& isStarted) {
 	isStarted = false;
 
 	system("cls");
-	printf("Вызвана функция чистки множества\n");
+		printf("Вызвана функция чистки множества\n"); /////если существует head
 	printf("Вы закончили работу со структурой\n");
 	system("pause");
 }
@@ -42,21 +42,28 @@ void isAllocated(SetNode* node) {
 SetNode* InitializeSetElement() {
 	SetNode* newNode = (SetNode*)malloc(sizeof(SetNode));
 	isAllocated(newNode);
-
-	//Переход в меню последовательности
+	
+	newNode->data = NULL;
 	newNode->next = NULL;
+	SequenceMenu(newNode->data);
+	
 
 	return newNode;
 }
 
 void AddtoSet(SetNode*& head) {
+	if (!head) {
+		head = InitializeSetElement();
+		return;
+	}
+
 	SetNode* t = head;
 	
-	while (t) { //Получить последний элемент 
+	while (t->next) { //Получить последний элемент 
 		t = t->next;
 	}
 
-	t = InitializeSetElement();
+	t->next = InitializeSetElement();
 }
 
 void GetCommandofSet(SetNode*& head, bool& isStarted) {
@@ -71,7 +78,7 @@ void GetCommandofSet(SetNode*& head, bool& isStarted) {
 		GetStartedSet(isStarted);
 		break;
 	case 2:
-		FinishWorkSet(isStarted);
+		FinishWorkSet(head, isStarted);
 		break;
 	case 7:
 		AddtoSet(head);
@@ -92,6 +99,7 @@ void PrintSetMenu() {
 	printf("[8] - Проверить принадлежит ли элемент множеству\n");
 	printf("[9] - Распечатать структуру\n");
 	printf("[10] - Завершить работу программы\n");
+	printf("\n");
 }
 
 void SetMenu() {
@@ -107,7 +115,7 @@ void SetMenu() {
 				printf("Структура пустая\n\n");
 
 		PrintSetMenu();
-
+		GetCommandofSet(head, isStarted);
 		
 		system("cls");
 	}
