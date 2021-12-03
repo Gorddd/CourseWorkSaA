@@ -74,12 +74,13 @@ void AddElement(SequenceNode*& head, SequenceNode*& pointer) {
 	}
 
 	SequenceNode* t = head;
-
 	while (t->next) { //Получить последний элемент
 		t = t->next;
 	}
 
 	t->next = InitializeSequenceElement();
+	if (!pointer)
+		pointer = t->next;
 }
 
 void SetColor(int colorMode) {
@@ -106,12 +107,12 @@ void PrintSequence(SequenceNode* head, SequenceNode* pointer) {
 	while (t) {
 		if (t == pointer) {
 			SetColor(2);
-			std::cout << std::fixed << std::setprecision(3) << t->data << " "; //Вывод числа с 3 знаками после запятой
+			std::cout << std::fixed << std::setprecision(3) << t->data << "  "; //Вывод числа с 3 знаками после запятой
 			colorMode = 0;
 		}
 		else {
 			SetColor(colorMode);
-			std::cout << std::fixed << std::setprecision(3) << t->data << " ";
+			std::cout << std::fixed << std::setprecision(3) << t->data << "  ";
 		}
 
 		t = t->next;
@@ -135,7 +136,10 @@ void ClearMemory(SequenceNode*& head, SequenceNode*& pointer) {
 
 void PrintElement(SequenceNode* pointer) {
 	system("cls");
-	printf("Очередной элемент: %f", pointer->data);
+	if (pointer)
+		std::cout << std::fixed << std::setprecision(3) << "Очередной элемент: " << pointer->data << std::endl;
+	else
+		printf("Вы не можете посмотреть значение очередного элемента, т.к. непрочитанные элементы отстутствуют!\n");
 	system("pause");
 }
 
@@ -149,7 +153,70 @@ void SkipElement(SequenceNode*& pointer) {
 	}
 }
 
-int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, bool& isStarted) {
+void ReadElement(SequenceNode*& pointer, SequenceNode*& object) {
+	system("cls");
+	if (pointer) {
+		object = pointer;
+		std::cout << std::fixed << std::setprecision(3) << "Прочитанный элемент: " << object->data << std::endl;
+		pointer = pointer->next;
+	}
+	else 
+		printf("Вы не можете прочитать очередной элемент, т.к. непрочитанные элементы отсутствуют\n");
+
+	system("pause");
+}
+
+void ChangeElement(SequenceNode*& pointer) {
+	system("cls");
+	if (pointer) {
+		printf("Введите новое значение: ");
+		std::cin >> pointer->data;
+	}
+	else {
+		printf("Вы не можете изменить очередной элемент, т.к. все элементы прочитаны!\n");
+		system("pause");
+	}
+}
+
+bool CheckCommandifitisClear(int command) {
+	int allowedCommands[5] = { 1, 2, 3, 4, 9 };
+	for (int i = 0; i < 5; i++)
+	{
+		if (allowedCommands[i] == command)
+			return 0;
+	}
+	return 1;
+}
+
+SequenceNode* isItClearandShowMsg(SequenceNode* head) {
+	if (!head) {
+		system("cls");
+		printf("Структура пуста, вы не можете использовать эту операцию!\n");
+		system("pause");
+	}
+	return head;
+}
+
+void SetPointerToHead(SequenceNode* head, SequenceNode*& pointer) {
+	if (pointer == head) {
+		system("cls");
+		printf("Указатель уже установлен в начале!\n");
+		system("pause");
+	}
+	else
+		pointer = head;
+}
+
+void isThereUnread(SequenceNode* pointer) {
+	system("cls");
+	if (pointer)
+		printf("Непрочитанные элементы есть!\n");
+	else
+		printf("Непрочитанных элементов нет!\n"); 
+	system("pause");
+}
+
+int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, SequenceNode*& object, bool& isStarted) {
 	printf("Команда ~ ");
 
 	int command = 0;
@@ -158,6 +225,8 @@ int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, bool& isSt
 	if (command != 1 && command != 2 && !CheckStart(isStarted))
 		return 1;
 
+	if (CheckCommandifitisClear(command) && !isItClearandShowMsg(head))
+		return 1;
 
 	switch (command)
 	{
@@ -186,8 +255,20 @@ int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, bool& isSt
 	case 6:
 		SkipElement(pointer);
 		break;
+	case 7:
+		ReadElement(pointer, object);
+		break;
+	case 8:
+		ChangeElement(pointer);
+		break;
 	case 9:
 		AddElement(head, pointer);
+		break;
+	case 10:
+		SetPointerToHead(head, pointer);
+		break;
+	case 11:
+		isThereUnread(pointer);
 		break;
 	case 12:
 		system("cls");
@@ -195,6 +276,9 @@ int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, bool& isSt
 		system("pause");
 		break;
 	default:
+		system("cls");
+		printf("Вы ввели неизвестную команду!\n");
+		system("pause");
 		break;
 	}
 	return 1;
@@ -218,6 +302,7 @@ void PrintSequenceMenu() {
 
 void SequenceMenu(SequenceNode*& head) {
 	SequenceNode* pointer = head;
+	SequenceNode* object = NULL;
 
 	bool isStarted = false;
 
@@ -231,7 +316,7 @@ void SequenceMenu(SequenceNode*& head) {
 				printf("Структура пустая!\n\n");
 
 		PrintSequenceMenu();
-		if (!GetCommandofSequence(head, pointer, isStarted))
-			return; //Выход из меню последовательности
+		if (!GetCommandofSequence(head, pointer, object, isStarted))
+			return;													//Выход из меню последовательности
 	}
 }
