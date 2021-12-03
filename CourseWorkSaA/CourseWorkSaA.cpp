@@ -2,6 +2,7 @@
 #include <iostream>
 #include <Windows.h>
 #include <stdlib.h>
+#include <iomanip>
 #include "Sequence.h"
 
 /*Множество последовательностей типа float*/ /*L1 список*/
@@ -89,6 +90,7 @@ void GetCommandofSet(SetNode*& head, bool& isStarted) {
 }
 
 void PrintSetMenu() {
+	printf("==[МНОЖЕСТВО]==\n");
 	printf("[1] - Начать работу с множеством\n");
 	printf("[2] - Закончить работу с множеством\n");
 	printf("[3] - Сделать пустой\n");
