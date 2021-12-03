@@ -67,6 +67,37 @@ void AddtoSet(SetNode*& head) {
 	t->next = InitializeSetElement();
 }
 
+void PrintSet(SetNode* head) {
+	SetNode* t = head;
+
+	int i = 1;
+	while (t) {
+		SetColor(2);
+		printf("Элемент %d{", i);
+		SetColor(0);
+
+		SequenceNode* seqt = t->data;
+		if (seqt)
+			while (seqt) {
+				std::cout << std::fixed << std::setprecision(3) << seqt->data;
+				seqt = seqt->next;
+
+				if (seqt)
+					printf(" ");
+			}
+		else
+			printf("Пустая");
+
+		SetColor(2);
+		printf("} ");
+		SetColor(0);
+
+		t = t->next;
+		i++;
+	}
+	printf("\n\n");
+}
+
 void GetCommandofSet(SetNode*& head, bool& isStarted) {
 	printf("Команда ~ ");
 
@@ -85,6 +116,9 @@ void GetCommandofSet(SetNode*& head, bool& isStarted) {
 		AddtoSet(head);
 		break;
 	default:
+		system("cls");
+		printf("Вы ввели неизвестную команду!\n");
+		system("pause");
 		break;
 	}
 }
@@ -108,9 +142,8 @@ void SetMenu() {
 	bool isStarted = false;
 
 	while (true) {
-		if (head) {
-
-		}
+		if (head)
+			PrintSet(head);
 		else
 			if (isStarted)
 				printf("Структура пустая\n\n");
