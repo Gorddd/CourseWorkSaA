@@ -134,6 +134,18 @@ void ClearMemory(SequenceNode*& head, SequenceNode*& pointer) {
 	pointer = head = NULL;
 }
 
+void ClearMemory(SequenceNode*& head) {
+	SequenceNode* t = head;
+
+	while (t) {
+		SequenceNode* nodetoDelete = t;
+		t = t->next;
+		free(nodetoDelete);
+	}
+
+	head = NULL;
+}
+
 void PrintElement(SequenceNode* pointer) {
 	system("cls");
 	if (pointer)
@@ -183,9 +195,9 @@ bool CheckCommandifitisClear(int command) {
 	for (int i = 0; i < 5; i++)
 	{
 		if (allowedCommands[i] == command)
-			return 0;
+			return false;
 	}
-	return 1;
+	return true;
 }
 
 SequenceNode* isItClearandShowMsg(SequenceNode* head) {

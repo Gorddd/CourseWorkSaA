@@ -75,7 +75,7 @@ void PrintSet(SetNode* head) {
 		SetColor(2);
 		printf("Элемент %d{", i);
 		SetColor(0);
-
+		
 		SequenceNode* seqt = t->data;
 		if (seqt)
 			while (seqt) {
@@ -98,12 +98,57 @@ void PrintSet(SetNode* head) {
 	printf("\n\n");
 }
 
+void ClearSet(SetNode*& head) {
+	while (head) {
+		SetNode* nodetoDelete = head;
+		head = head->next;
+
+		ClearMemory(nodetoDelete->data);
+		free(nodetoDelete);
+	}
+
+	head = NULL;
+}
+
+void isSetClear(SetNode* head) {
+	system("cls");
+	if (head)
+		printf("Структура не пустая!\n");
+	else
+		printf("Структура пустая!\n");
+	system("pause");
+}
+
+bool CheckCommandifSetisClear(int command) {
+	int allowedCommands[6] = { 1, 2, 3, 4, 7, 10 };
+	for (int i = 0; i < 6; i++)
+	{
+		if (allowedCommands[i] == command)
+			return false;
+	}
+	return true;
+}
+
+SetNode* isSetClearandShowMsg(SetNode* head) {
+	if (!head) {
+		system("cls");
+		printf("Структура пуста, вы не можете использовать эту операцию!\n");
+		system("pause");
+	}
+	return head;
+}
+
 void GetCommandofSet(SetNode*& head, bool& isStarted) {
 	printf("Команда ~ ");
 
 	int command = 0;
 	std::cin >> command;
 
+	if (command != 1 && command != 10 && !CheckStart(isStarted))
+		return;
+	if (CheckCommandifSetisClear(command) && !isSetClearandShowMsg(head))
+		return;
+	
 	switch (command)
 	{
 	case 1:
@@ -111,6 +156,22 @@ void GetCommandofSet(SetNode*& head, bool& isStarted) {
 		break;
 	case 2:
 		FinishWorkSet(head, isStarted);
+		break;
+	case 3:
+		system("cls");
+		if (head) {
+			ClearSet(head);
+			printf("Вы сделали структуру пустой!\n");
+		}
+		else
+			printf("Структура уже пустая!\n");
+		system("pause");
+		break;
+	case 4:
+		isSetClear(head);
+		break;
+	case 5:
+
 		break;
 	case 7:
 		AddtoSet(head);
