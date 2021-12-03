@@ -82,13 +82,42 @@ void AddElement(SequenceNode*& head, SequenceNode*& pointer) {
 	t->next = InitializeSequenceElement();
 }
 
+void SetColor(int colorMode) {
+	switch (colorMode)
+	{
+	case 0:
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (WORD)((0 << 4) | 7)); //стандартный
+		break;
+	case 1:
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN); 
+		break;
+	case 2:
+		SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (WORD)((0 << 4) | 6)); //желтый
+		break;
+	default:
+		break;
+	}
+}
+
 void PrintSequence(SequenceNode* head, SequenceNode* pointer) {
 	SequenceNode* t = head;
+	int colorMode = 1;
 
 	while (t) {
-		std::cout << std::fixed << std::setprecision(3) << t->data << " "; //Вывод числа с 3 знаками после запятой
+		if (t == pointer) {
+			SetColor(2);
+			std::cout << std::fixed << std::setprecision(3) << t->data << " "; //Вывод числа с 3 знаками после запятой
+			colorMode = 0;
+		}
+		else {
+			SetColor(colorMode);
+			std::cout << std::fixed << std::setprecision(3) << t->data << " ";
+		}
+
 		t = t->next;
 	}
+
+	SetColor(0);
 	printf("\n\n");
 }
 
@@ -102,6 +131,22 @@ void ClearMemory(SequenceNode*& head, SequenceNode*& pointer) {
 	}
 
 	pointer = head = NULL;
+}
+
+void PrintElement(SequenceNode* pointer) {
+	system("cls");
+	printf("Очередной элемент: %f", pointer->data);
+	system("pause");
+}
+
+void SkipElement(SequenceNode*& pointer) {
+	if (pointer) 
+		pointer = pointer->next;
+	else {
+		system("cls");
+		printf("Вы не можете пропустить очередной элемент, т.к. непрочитанные элементы отсутствуют\n");
+		system("pause");
+	}
 }
 
 int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, bool& isStarted) {
@@ -124,7 +169,7 @@ int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, bool& isSt
 		return 0;
 	case 3:
 		system("cls");
-		if (head && pointer) {
+		if (head) {
 			ClearMemory(head, pointer);
 			printf("Вы сделали структуру пустой\n");
 		}
@@ -135,8 +180,11 @@ int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, bool& isSt
 	case 4:
 		isItClear(head, pointer);
 		break;
-	case 5: 
-
+	case 5:
+		PrintElement(pointer);
+		break;
+	case 6:
+		SkipElement(pointer);
 		break;
 	case 9:
 		AddElement(head, pointer);
@@ -153,7 +201,6 @@ int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, bool& isSt
 }
 
 void PrintSequenceMenu() {
-	printf("==[ПОСЛЕДОВАТЕЛЬНОСТЬ]==\n");
 	printf("[1] - Начать работу с последовательностью\n");
 	printf("[2] - Закончить работу с последовательностью (вернуться к множеству)\n");
 	printf("[3] - Сделать пустой\n");
@@ -177,7 +224,7 @@ void SequenceMenu(SequenceNode*& head) {
 	while (true) {
 		system("cls");
 
-		if (head && pointer)
+		if (head)
 			PrintSequence(head, pointer);
 		else
 			if (isStarted)
@@ -186,7 +233,5 @@ void SequenceMenu(SequenceNode*& head) {
 		PrintSequenceMenu();
 		if (!GetCommandofSequence(head, pointer, isStarted))
 			return; //Выход из меню последовательности
-
-		
 	}
 }

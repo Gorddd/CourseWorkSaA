@@ -90,7 +90,6 @@ void GetCommandofSet(SetNode*& head, bool& isStarted) {
 }
 
 void PrintSetMenu() {
-	printf("==[МНОЖЕСТВО]==\n");
 	printf("[1] - Начать работу с множеством\n");
 	printf("[2] - Закончить работу с множеством\n");
 	printf("[3] - Сделать пустой\n");
