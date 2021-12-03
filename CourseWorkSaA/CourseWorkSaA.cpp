@@ -27,7 +27,8 @@ void FinishWorkSet(SetNode*& head, bool& isStarted) {
 	isStarted = false;
 
 	system("cls");
-		printf("Вызвана функция чистки множества\n"); /////если существует head
+	if (head)
+		ClearSet(head);
 	printf("Вы закончили работу со структурой\n");
 	system("pause");
 }
@@ -136,6 +137,10 @@ SetNode* isSetClearandShowMsg(SetNode* head) {
 		system("pause");
 	}
 	return head;
+}
+
+void DeleteElement(SetNode*& head) {
+
 }
 
 void GetCommandofSet(SetNode*& head, bool& isStarted) {
