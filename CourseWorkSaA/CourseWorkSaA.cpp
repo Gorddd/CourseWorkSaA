@@ -70,13 +70,26 @@ void AddtoSet(SetNode*& head) {
 		return;
 	}
 
+	SetNode* newNode = InitializeSetElement();
+
 	SetNode* t = head;
-	
-	while (t->next) { //Получить последний элемент 
+	SetNode* lastSeqNode = t;
+	while (t) { //Получить последний элемент и узнать, есть ли уже такой
+
+		if (areSeqstheSame(newNode->data, t->data)) {
+			system("cls");
+			printf("Такой элемент уже есть в множестве!\n");
+			system("pause");
+			ClearSet(newNode);
+			return;
+		}
+
+		if (!t->next)
+			lastSeqNode = t;
 		t = t->next;
 	}
-
-	t->next = InitializeSetElement();
+	
+	lastSeqNode->next = newNode;
 }
 
 void PrintSet(SetNode* head) {
@@ -109,8 +122,6 @@ void PrintSet(SetNode* head) {
 	}
 	printf("\n\n");
 }
-
-
 
 void isSetClear(SetNode* head) {
 	system("cls");
