@@ -92,7 +92,7 @@ void AddtoSet(SetNode*& head) {
 	lastSeqNode->next = newNode;
 }
 
-void PrintSet(SetNode* head) {
+void PrintSet(SetNode* head, int printMode) {
 	SetNode* t = head;
 
 	int i = 1;
@@ -115,6 +115,8 @@ void PrintSet(SetNode* head) {
 
 		SetColor(2);
 		printf("} ");
+		if (printMode)
+			printf("\n");
 		SetColor(0);
 
 		t = t->next;
@@ -133,8 +135,8 @@ void isSetClear(SetNode* head) {
 }
 
 bool CheckCommandifSetisClear(int command) {
-	int allowedCommands[6] = { 1, 2, 3, 4, 7, 10 };
-	for (int i = 0; i < 6; i++)
+	int allowedCommands[7] = { 1, 2, 3, 4, 7, 9, 10 };
+	for (int i = 0; i < 7; i++)
 	{
 		if (allowedCommands[i] == command)
 			return false;
@@ -249,7 +251,24 @@ void TakeElement(SetNode*& head, SetNode*& object) {
 	ClearSet(newNode);
 }
 
+void isElementinSet(SetNode* head) {
+	SetNode* newNode = InitializeSetElement();
+	system("cls");
 
+	SetNode* t = head;
+	while (t) {
+		if (areSeqstheSame(t->data, newNode->data)) {
+			printf("Элемент принадлежит множеству!\n");
+			system("pause");
+			return;
+		}
+
+		t = t->next;
+	}
+
+	printf("Элемент не принадлежит множеству!\n");
+	system("pause");
+}
 
 void GetCommandofSet(SetNode*& head, SetNode*& object, bool& isStarted) {
 	printf("Команда ~ ");
@@ -292,6 +311,24 @@ void GetCommandofSet(SetNode*& head, SetNode*& object, bool& isStarted) {
 	case 7:
 		AddtoSet(head);
 		break;
+	case 8:
+		isElementinSet(head);
+		break;
+	case 9:
+		system("cls");
+		if (head)
+			PrintSet(head, 1);
+		else
+			printf("Структура пустая!\n\n");
+		system("pause");
+		break;
+	case 10:
+		if (head)
+			ClearSet(head);
+		if (object)
+			ClearSet(object);
+		exit(0);
+		break;
 	default:
 		system("cls");
 		printf("Вы ввели неизвестную команду!\n");
@@ -321,7 +358,7 @@ void SetMenu() {
 
 	while (true) {
 		if (head)
-			PrintSet(head);
+			PrintSet(head, 0);
 		else
 			if (isStarted)
 				printf("Структура пустая\n\n");
