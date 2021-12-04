@@ -154,7 +154,9 @@ SetNode* isSetClearandShowMsg(SetNode* head) {
 void DeleteRoot(SetNode*& head) {
 	SetNode* nodetoDelete = head;
 	head = head->next;
-	free(nodetoDelete);
+
+	nodetoDelete->next = NULL;
+	ClearSet(nodetoDelete);
 }
 
 void DeleteElement(SetNode*& head) {
@@ -179,7 +181,8 @@ void DeleteElement(SetNode*& head) {
 			t->next = nodetoDelete->next;
 
 			ClearSet(newNode);
-			free(nodetoDelete);
+			nodetoDelete->next = NULL;
+			ClearSet(nodetoDelete);
 			system("cls");
 			printf("Элемент удалён!\n");
 			system("pause");
@@ -195,7 +198,60 @@ void DeleteElement(SetNode*& head) {
 	ClearSet(newNode);
 }
 
-void GetCommandofSet(SetNode*& head, bool& isStarted) {
+void TakeElement(SetNode*& head, SetNode*& object) {
+	SetNode* newNode = InitializeSetElement();
+
+	if (areSeqstheSame(head->data, newNode->data)) { //Удаление корня
+		ClearSet(newNode);
+
+		ClearSet(object);							 //Удаление того, что было до этого момента в object
+		object = head;
+		head = head->next;
+		object->next = NULL;
+		
+		system("cls");
+		printf("Взятый элемент: ");
+		if (object->data)
+			PrintSequence(object->data, NULL);
+		else
+			printf("Пустая последовательность\n\n");
+		system("pause");
+		return;
+	}
+
+	SetNode* t = head;
+	while (t->next) {
+		SequenceNode* seqt = t->next->data;
+
+		if (areSeqstheSame(seqt, newNode->data)) {
+			object = t->next;
+			t->next = object->next;
+
+			ClearSet(newNode);
+			object->next = NULL;
+			
+			system("cls");
+			printf("Взятый элемент: ");
+			if (object->data)
+				PrintSequence(object->data, NULL);
+			else
+				printf("Пустая последовательность\n\n");
+			system("pause");
+			return;
+		}
+
+		t = t->next;
+	}
+
+	system("cls");
+	printf("Такой элемент отсутствует!\n");
+	system("pause");
+	ClearSet(newNode);
+}
+
+
+
+void GetCommandofSet(SetNode*& head, SetNode*& object, bool& isStarted) {
 	printf("Команда ~ ");
 
 	int command = 0;
@@ -230,6 +286,9 @@ void GetCommandofSet(SetNode*& head, bool& isStarted) {
 	case 5:
 		DeleteElement(head);
 		break;
+	case 6:
+		TakeElement(head, object);
+		break;
 	case 7:
 		AddtoSet(head);
 		break;
@@ -257,6 +316,7 @@ void PrintSetMenu() {
 
 void SetMenu() {
 	SetNode* head = NULL;
+	SetNode* object = NULL;
 	bool isStarted = false;
 
 	while (true) {
@@ -267,7 +327,7 @@ void SetMenu() {
 				printf("Структура пустая\n\n");
 
 		PrintSetMenu();
-		GetCommandofSet(head, isStarted);
+		GetCommandofSet(head, object, isStarted);
 		
 		system("cls");
 	}
