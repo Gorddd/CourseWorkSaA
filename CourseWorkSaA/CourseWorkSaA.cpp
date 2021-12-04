@@ -12,6 +12,17 @@ struct SetNode { //Узел множества
 	SetNode* next;
 };
 
+void ClearSet(SetNode*& head) {
+	while (head) {
+		SetNode* nodetoDelete = head;
+		head = head->next;
+
+		ClearMemory(nodetoDelete->data);
+		free(nodetoDelete);
+	}
+
+	head = NULL;
+}
 
 void GetStartedSet(bool& isStarted) {
 	if (isStarted) {
@@ -99,17 +110,7 @@ void PrintSet(SetNode* head) {
 	printf("\n\n");
 }
 
-void ClearSet(SetNode*& head) {
-	while (head) {
-		SetNode* nodetoDelete = head;
-		head = head->next;
 
-		ClearMemory(nodetoDelete->data);
-		free(nodetoDelete);
-	}
-
-	head = NULL;
-}
 
 void isSetClear(SetNode* head) {
 	system("cls");
@@ -139,8 +140,48 @@ SetNode* isSetClearandShowMsg(SetNode* head) {
 	return head;
 }
 
-void DeleteElement(SetNode*& head) {
+void DeleteRoot(SetNode*& head) {
+	SetNode* nodetoDelete = head;
+	head = head->next;
+	free(nodetoDelete);
+}
 
+void DeleteElement(SetNode*& head) {
+	SetNode* newNode = InitializeSetElement();
+	SequenceNode* newSeqNode = newNode->data;
+
+	if (areSeqstheSame(head->data, newSeqNode)) { //Удаление корня
+		ClearSet(newNode);
+		DeleteRoot(head);
+		system("cls");
+		printf("Элемент удалён!\n");
+		system("pause");
+		return;
+	}
+
+	SetNode* t = head;
+	while (t->next) { //удаление элемента отличного от корня
+		SequenceNode* seqt = t->next->data;
+		
+		if (areSeqstheSame(seqt, newSeqNode)) {
+			SetNode* nodetoDelete = t->next;
+			t->next = nodetoDelete->next;
+
+			ClearSet(newNode);
+			free(nodetoDelete);
+			system("cls");
+			printf("Элемент удалён!\n");
+			system("pause");
+			return;
+		}
+
+		t = t->next;
+	}
+
+	system("cls");
+	printf("Такой элемент отсутствует!\n");
+	system("pause");
+	ClearSet(newNode);
 }
 
 void GetCommandofSet(SetNode*& head, bool& isStarted) {
@@ -176,7 +217,7 @@ void GetCommandofSet(SetNode*& head, bool& isStarted) {
 		isSetClear(head);
 		break;
 	case 5:
-
+		DeleteElement(head);
 		break;
 	case 7:
 		AddtoSet(head);

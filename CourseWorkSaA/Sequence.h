@@ -228,6 +228,30 @@ void isThereUnread(SequenceNode* pointer) {
 	system("pause");
 }
 
+int GetNumberofElements(SequenceNode* seqNode) {
+	int i = 0;
+	while (seqNode) {
+		i++;
+		seqNode = seqNode->next;
+	}
+	return i;
+}
+
+bool areSeqstheSame(SequenceNode* firstSeq, SequenceNode* secondSeq) {
+	if (GetNumberofElements(firstSeq) != GetNumberofElements(secondSeq))
+		return false;
+
+	while (firstSeq && secondSeq) { //проверка по элементу
+		if (firstSeq->data != secondSeq->data)
+			return false;
+
+		firstSeq = firstSeq->next;
+		secondSeq = secondSeq->next;
+	}
+
+	return true;
+}
+
 int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, SequenceNode*& object, bool& isStarted) {
 	printf("Команда ~ ");
 
