@@ -201,54 +201,31 @@ void DeleteElement(SetNode*& head) {
 }
 
 void TakeElement(SetNode*& head, SetNode*& object) {
-	SetNode* newNode = InitializeSetElement();
+	SetNode* t = head;
 
-	if (areSeqstheSame(head->data, newNode->data)) { //Удаление корня
-		ClearSet(newNode);
+	system("cls");
+	printf("Взятый элемент: ");
 
-		ClearSet(object);							 //Удаление того, что было до этого момента в object
+	if (!t->next) {
+		ClearSet(object);
 		object = head;
-		head = head->next;
-		object->next = NULL;
-		
-		system("cls");
-		printf("Взятый элемент: ");
-		if (object->data)
-			PrintSequence(object->data, NULL);
-		else
-			printf("Пустая последовательность\n\n");
+		head = NULL;
+		PrintSequence(object->data, NULL);
 		system("pause");
 		return;
 	}
 
-	SetNode* t = head;
 	while (t->next) {
-		SequenceNode* seqt = t->next->data;
-
-		if (areSeqstheSame(seqt, newNode->data)) {
+		if (!t->next->next) {
+			ClearSet(object); //Удалит то что было до этого
 			object = t->next;
-			t->next = object->next;
-
-			ClearSet(newNode);
-			object->next = NULL;
-			
-			system("cls");
-			printf("Взятый элемент: ");
-			if (object->data)
-				PrintSequence(object->data, NULL);
-			else
-				printf("Пустая последовательность\n\n");
+			t->next = NULL;
+			PrintSequence(object->data, NULL);
 			system("pause");
 			return;
 		}
-
 		t = t->next;
 	}
-
-	system("cls");
-	printf("Такой элемент отсутствует!\n");
-	system("pause");
-	ClearSet(newNode);
 }
 
 void isElementinSet(SetNode* head) {
