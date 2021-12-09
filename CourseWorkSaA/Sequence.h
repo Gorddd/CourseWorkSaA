@@ -13,7 +13,7 @@ struct SequenceNode { //Узел последовательности
 
 void isItClear(SequenceNode* head, SequenceNode* pointer) {
 	system("cls");
-	if (head && pointer)
+	if (head)
 		printf("Структура НЕ пустая!\n");
 	else
 		printf("Структура пустая!\n");
@@ -258,7 +258,7 @@ int GetCommandofSequence(SequenceNode*& head, SequenceNode*& pointer, SequenceNo
 	int command = 0;
 	std::cin >> command;
 
-	if (command != 1 && command != 2 && !CheckStart(isStarted))
+	if (command != 1 && !CheckStart(isStarted))
 		return 1;
 
 	if (CheckCommandifitisClear(command) && !isItClearandShowMsg(head))

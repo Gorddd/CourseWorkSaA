@@ -210,7 +210,10 @@ void TakeElement(SetNode*& head, SetNode*& object) {
 		ClearSet(object);
 		object = head;
 		head = NULL;
-		PrintSequence(object->data, NULL);
+		if (object->data)
+			PrintSequence(object->data, NULL);
+		else
+			printf("пустая последовательность!\n");
 		system("pause");
 		return;
 	}
@@ -220,7 +223,10 @@ void TakeElement(SetNode*& head, SetNode*& object) {
 			ClearSet(object); //Удалит то что было до этого
 			object = t->next;
 			t->next = NULL;
-			PrintSequence(object->data, NULL);
+			if (object->data)
+				PrintSequence(object->data, NULL);
+			else
+				printf("пустая последовательность!\n");
 			system("pause");
 			return;
 		}
