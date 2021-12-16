@@ -1,4 +1,5 @@
-﻿#include <stdio.h>
+﻿/*Подключение необходимых библиотек*/
+#include <stdio.h>
 #include <iostream>
 #include <Windows.h>
 #include <stdlib.h>
@@ -6,8 +7,8 @@
 #include "Sequence.h"
 
 struct SetNode { //Узел множества
-	SequenceNode* data;
-	SetNode* next;
+	SequenceNode* data; //Указатель на последовательность
+	SetNode* next; //Указатель на следующий элемент
 };
 
 void ClearSet(SetNode*& head) { //Удаление множества
@@ -301,16 +302,16 @@ void GetCommandofSet(SetNode*& head, SetNode*& object, bool& isStarted) {//Об�
 	case 9:
 		system("cls");
 		if (head)
-			PrintSet(head, 1);
+			PrintSet(head, 1);//Распечатать множество
 		else
 			printf("Структура пустая!\n\n");
 		system("pause");
 		break;
 	case 10:
 		if (head)
-			ClearSet(head);
+			ClearSet(head);//Очистить множество
 		if (object)
-			ClearSet(object);
+			ClearSet(object);//Очистить объект
 		exit(0);
 		break;
 	default:
@@ -321,7 +322,7 @@ void GetCommandofSet(SetNode*& head, SetNode*& object, bool& isStarted) {//Об�
 	}
 }
 
-void PrintSetMenu() {
+void PrintSetMenu() {//Печатает меню
 	printf("[1] - Начать работу с множеством\n");
 	printf("[2] - Закончить работу с множеством\n");
 	printf("[3] - Сделать пустой\n");
@@ -335,20 +336,20 @@ void PrintSetMenu() {
 	printf("\n");
 }
 
-void SetMenu() {
-	SetNode* head = NULL;
-	SetNode* object = NULL;
-	bool isStarted = false;
+void SetMenu() {//Обработчик меню
+	SetNode* head = NULL;//Корень списка
+	SetNode* object = NULL;//Объект
+	bool isStarted = false;//Начата ли работа
 
 	while (true) {
 		if (head)
-			PrintSet(head, 0);
+			PrintSet(head, 0);//Распечатать множество
 		else
 			if (isStarted)
 				printf("Структура пустая\n\n");
 
-		PrintSetMenu();
-		GetCommandofSet(head, object, isStarted);
+		PrintSetMenu();//Распечатать меню
+		GetCommandofSet(head, object, isStarted);//Обработать команду пользователя
 		
 		system("cls");
 	}
@@ -357,5 +358,5 @@ void SetMenu() {
 int main() {
 	setlocale(LC_ALL, "Russian");
 
-	SetMenu();
+	SetMenu();//Вызвать меню множества
 }
